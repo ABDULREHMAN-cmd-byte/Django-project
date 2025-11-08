@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Stock Items{% endblock title %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Stock Items</h2>
+  <div>
+    <a href="{% url 'stock_add' %}" class="btn btn-primary">+ Add Stock</a>
+    <a href="{% url 'low_stock' %}" class="btn btn-warning">Low Stock Alert</a>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Supplier</th>
+      <th>Quantity</th>
+      <th>Minimum Level</th>
+      <th>Last Updated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stock in stocks %}
+    <tr>
+      <td>{{ stock.id }}</td>
+      <td>{{ stock.name }}</td>
+      <td>{{ stock.supplier.name }}</td>
+      <td>
+        {% if stock.quantity <= stock.min_level %}
+          <span class="badge bg-danger">{{ stock.quantity }}</span>
+        {% else %}
+          <span class="badge bg-success">{{ stock.quantity }}</span>
+        {% endif %}
+      </td>
+      <td>{{ stock.min_level }}</td>
+      <td>{{ stock.last_updated|date:"M d, Y H:i" }}</td>
+      <td>
+        <a href="{% url 'stock_edit' stock.id %}" class="btn btn-sm btn-primary">Edit</a>
+        <a href="{% url 'stock_delete' stock.id %}" class="btn btn-sm btn-danger"
+           onclick="return confirm('Are you sure you want to delete this stock item?');">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7" class="text-center">No stock items found</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock body %}

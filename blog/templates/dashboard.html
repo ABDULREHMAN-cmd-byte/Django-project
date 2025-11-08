@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock title %}
+{% block body %}
+
+<div class="container mt-5 text-center">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-light">⛽ Petroleum Gas Dashboard</h2>
+    <button id="theme-toggle" class="btn btn-outline-light">🌙</button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4 g-3">
+    <div class="col-md-3">
+      <div class="card bg-success text-white p-3 rounded-4 shadow h-100">
+        <h5>Total Equipment</h5>
+        <h2>{{ total_equipment }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-primary text-white p-3 rounded-4 shadow h-100">
+        <h5>Total Suppliers</h5>
+        <h2>{{ total_suppliers }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark p-3 rounded-4 shadow h-100">
+        <h5>Stock Items</h5>
+        <h2>{{ total_stock_items }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-danger text-white p-3 rounded-4 shadow h-100">
+        <h5>Low Stock Alerts</h5>
+        <h2 id="low-stock-count">{{ low_stock_count }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart + Quick Actions -->
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card bg-dark text-white p-4 rounded-4 shadow h-100">
+        <h4 class="mb-3">📈 Stock Level Chart</h4>
+        <canvas id="stockChart" height="180"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card p-4 rounded-4 shadow h-100">
+        <h5 class="mb-3">⚙️ Quick Actions</h5>
+        <div class="d-grid gap-2">
+          <a href="{% url 'equipment_list' %}" class="btn btn-success">Manage Equipment</a>
+          <a href="{% url 'supplier_list' %}" class="btn btn-primary">Manage Suppliers</a>
+          <a href="{% url 'stock_list' %}" class="btn btn-warning text-dark">Manage Stock</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // chart data from Django context
+  const labels = {{ chart_labels|safe }};
+  const data = {{ chart_data|safe }};
+
+  const ctx = document.getElementById('stockChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Available Quantity',
+        data: data,
+        backgroundColor: 'rgba(0, 150, 255, 0.7)',
+        borderColor: 'rgba(255, 255, 255, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, ticks: { color: 'white' } },
+                x: { ticks: { color: 'white' } } },
+      plugins: { legend: { labels: { color: 'white' } } }
+    }
+  });
+
+  // Theme toggle
+  const btn = document.getElementById('theme-toggle');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode'))
+      localStorage.setItem('theme', 'dark');
+    else
+      localStorage.setItem('theme', 'light');
+  });
+
+  // Keep theme on reload
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+
+  // Poll low-stock count every 30s
+  async function pollLowStock() {
+    try {
+      const res = await fetch("{% url 'low_stock' %}?format=json");
+      if (!res.ok) return;
+      const obj = await res.json();
+      document.getElementById('low-stock-count').innerText = obj.low_stock_count;
+    } catch (e) { console.error('poll error', e); }
+  }
+  setInterval(pollLowStock, 30000);
+</script>
+
+<style>
+  body {
+    background-color: #0b1220;
+    color: #f0f0f0;
+  }
+  .dark-mode {
+    background: #0b1220 !important;
+    color: #dfe7f5 !important;
+  }
+  .dark-mode .card { background: #0f1724 !important; color: #dfe7f5 !important; }
+  .card {
+    transition: all 0.3s ease;
+  }
+</style>
+
+{% endblock body %}

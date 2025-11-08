@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Low Stock Items{% endblock title %}
+
+{% block body %}
+<h2 class="mb-3 text-warning">⚠️ Low Stock Alert</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Supplier</th>
+      <th>Quantity</th>
+      <th>Minimum Level</th>
+      <th>Last Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in low_items %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.supplier.name }}</td>
+      <td><span class="badge bg-danger">{{ item.quantity }}</span></td>
+      <td>{{ item.min_level }}</td>
+      <td>{{ item.last_updated|date:"M d, Y H:i" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-center">All stock levels are sufficient ✅</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'stock_list' %}" class="btn btn-secondary mt-3">Back to Stock List</a>
+{% endblock body %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Vehicles{% endblock %}
+{% block body %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-info"><i class="bi bi-truck"></i> Vehicle Entries</h2>
+    <a href="{% url 'vehicle_add' %}" class="btn btn-primary btn-lg shadow">
+      <i class="bi bi-plus-circle"></i> New Entry
+    </a>
+  </div>
+
+  <div class="card p-3">
+    <div class="table-responsive">
+      <table class="table table-hover table-dark table-striped align-middle">
+        <thead class="table-light text-center">
+          <tr>
+            <th>#</th>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Entry</th>
+            <th>Exit</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in vehicles %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ v.vehicle_number }} <small>({{ v.vehicle_type }})</small></td>
+            <td>{{ v.driver_name }}<br><small>{{ v.driver_phone }}</small></td>
+            <td>{{ v.product_type }}</td>
+            <td>{{ v.quantity }}</td>
+            <td>{{ v.entry_time|date:"Y-m-d H:i" }}</td>
+            <td>{% if v.exit_time %}{{ v.exit_time|date:"Y-m-d H:i" }}{% else %}-{% endif %}</td>
+            <td class="text-center">
+              <a class="btn btn-sm btn-outline-info" href="{% url 'vehicle_pdf' v.pk %}" target="_blank">
+                <i class="bi bi-file-earmark-pdf"></i> PDF
+              </a>
+              <a class="btn btn-sm btn-outline-warning" href="{% url 'vehicle_exit' v.pk %}">
+                <i class="bi bi-box-arrow-right"></i> Exit
+              </a>
+              <form method="post" action="{% url 'vehicle_delete' v.pk %}" style="display:inline">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this record?')">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="8" class="text-center text-muted">No vehicle entries found</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

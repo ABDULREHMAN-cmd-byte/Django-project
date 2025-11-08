@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Vehicle Records{% endblock title %}
+{% block body %}
+
+<div class="container mt-4">
+  <h2>Vehicle Records</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Vehicle Number</th>
+        <th>Driver Name</th>
+        <th>Driver Phone</th>
+        <th>Supplier</th>
+        <th>Vehicle Type</th>
+        <th>Product Type</th>
+        <th>Quantity</th>
+        <th>Remarks</th>
+        <th>Checked By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.vehicle_number }}</td>
+        <td>{{ record.driver_name }}</td>
+        <td>{{ record.driver_phone }}</td>
+        <td>{{ record.supplier }}</td>
+        <td>{{ record.vehicle_type }}</td>
+        <td>{{ record.product_type }}</td>
+        <td>{{ record.quantity }}</td>
+        <td>{{ record.remarks }}</td>
+        <td>{{ record.checked_by }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="9">No records found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock body %}

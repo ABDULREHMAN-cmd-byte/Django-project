@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Edit Equipment{% endblock title %}
+
+{% block body %}
+<div class="container my-5">
+  <h2 class="text-center text-primary mb-4">Edit Equipment</h2>
+
+  <form method="post" class="shadow p-4 rounded bg-light">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Update</button>
+    <a href="{% url 'equipment_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock body %}

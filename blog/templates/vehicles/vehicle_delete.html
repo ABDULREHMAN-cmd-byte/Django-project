@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container mt-4">
+  <h4>Confirm Delete</h4>
+  <p>Delete record for <strong>{{ vehicle.vehicle_number }}</strong> ?</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-secondary" href="{% url 'vehicle_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

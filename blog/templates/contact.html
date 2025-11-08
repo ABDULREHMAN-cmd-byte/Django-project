@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact{% endblock title %}
+
+{% block body %}
+<!-- Background Image -->
+<div class="container-fluid p-0">
+  <img src="{% static 'images/contact-us.jpg' %}" 
+       alt="Contact Us" 
+       class="w-100 vh-100" 
+       style="object-fit: cover;">
+</div>
+
+<!-- Contact Section -->
+<div class="text-center my-5">
+  <h1 class="fw-bold">Contact Us</h1>
+  <hr class="mx-auto" style="width: 100px; height: 3px; background-color: #000; border: none; border-radius: 2px;">
+  <p class="mt-3 fs-5 text-muted">We’re here to assist you in the Petroleum & Gas industry.</p>
+</div>
+
+<!-- ✅ Success Message -->
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-success text-center">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- Contact Form -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4 fw-bold">Get in Touch</h2>
+          <form method="POST" action="{% url 'contact' %}" novalidate onsubmit="return validateForm()">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+              <label for="name" class="form-label fw-semibold">Full Name</label>
+              <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label fw-semibold">Email Address</label>
+              <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label fw-semibold">Phone Number</label>
+              <input type="tel" class="form-control form-control-lg" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9+ ]{10,15}" required>
+              <small class="text-muted">Include country code (e.g. +92 300 1234567)</small>
+            </div>
+
+            <div class="mb-3">
+              <label for="subject" class="form-label fw-semibold">Subject (Petroleum & Gas)</label>
+              <select class="form-select form-select-lg" id="subject" name="subject" required>
+                <option value="" disabled selected>Choose your subject</option>
+                <option value="general">General Inquiry</option>
+                <option value="oil">Oil Supply & Refining</option>
+                <option value="gas">Gas Production & Distribution</option>
+                <option value="equipment">Machinery & Equipment</option>
+                <option value="partnership">Business Partnership</option>
+                <option value="training">Technical Training or Internship</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="message" class="form-label fw-semibold">Message</label>
+              <textarea class="form-control form-control-lg" id="message" name="message" rows="4" placeholder="Write your message..." required></textarea>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg rounded-3">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Validation -->
+<script>
+function validateForm() {
+  const fields = ['name', 'email', 'phone', 'subject', 'message'];
+  for (let id of fields) {
+    const field = document.getElementById(id);
+    if (!field.value.trim()) {
+      alert('Please fill out all fields before submitting.');
+      field.focus();
+      return false;
+    }
+  }
+  return true;
+}
+</script>
+{% endblock body %}

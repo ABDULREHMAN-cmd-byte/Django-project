@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Delete Equipment{% endblock title %}
+
+{% block body %}
+<div class="container my-5 text-center">
+  <h2 class="text-danger mb-4">Are you sure you want to delete this equipment?</h2>
+  <p><strong>{{ equipment.name }}</strong></p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'equipment_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock body %}

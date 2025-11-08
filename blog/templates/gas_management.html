@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gas Management{% endblock title %}
+{% block body %}
+<div class="container my-5">
+  <h1 class="text-center mb-4 text-primary fw-bold">Gas Management Services</h1>
+
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <img src="{% static 'images/gass managment.webp' %}" alt="Gas Management"
+           class="img-fluid rounded shadow border border-2 border-warning">
+    </div>
+    <div class="col-md-6">
+      <p class="text-secondary">
+        We provide reliable and efficient gas distribution, storage, and safety monitoring services for industrial clients.
+      </p>
+      <ul class="list-group list-group-flush shadow-sm">
+        <li class="list-group-item">Natural gas supply chain</li>
+        <li class="list-group-item">Gas pipeline monitoring</li>
+        <li class="list-group-item">Energy optimization consulting</li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock body %}

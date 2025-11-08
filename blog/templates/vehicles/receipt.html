@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vehicle Receipt</title>
+  <style>
+    body { font-family: Arial; margin: 30px; }
+    h2 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    td { padding: 8px; border-bottom: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h2>Vehicle Entry Receipt</h2>
+  <table>
+    <tr><td><b>Vehicle No:</b></td><td>{{ vehicle.vehicle_number }}</td></tr>
+    <tr><td><b>Driver:</b></td><td>{{ vehicle.driver_name }}</td></tr>
+    <tr><td><b>Supplier:</b></td><td>{{ vehicle.supplier }}</td></tr>
+    <tr><td><b>Product:</b></td><td>{{ vehicle.product_type }}</td></tr>
+    <tr><td><b>Quantity:</b></td><td>{{ vehicle.quantity }}</td></tr>
+    <tr><td><b>Entry Time:</b></td><td>{{ vehicle.entry_time }}</td></tr>
+    <tr><td><b>Exit Time:</b></td><td>{{ vehicle.exit_time|default:"--" }}</td></tr>
+    <tr><td><b>Checked By:</b></td><td>{{ vehicle.checked_by }}</td></tr>
+  </table>
+  <p style="text-align:center;margin-top:40px;">Printed on {{ now|date:"Y-m-d H:i" }}</p>
+</body>
+</html>

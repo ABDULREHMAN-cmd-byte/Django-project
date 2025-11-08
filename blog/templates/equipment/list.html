@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Equipment{% endblock title %}
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Equipment</h2>
+  <div>
+    <a href="{% url 'equipment_add' %}" class="btn btn-primary">+ Add Equipment</a>
+  </div>
+</div>
+
+<form class="mb-3" method="get">
+  <div class="input-group">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search equipment...">
+    <button class="btn btn-outline-secondary">Search</button>
+  </div>
+</form>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th><th>Name</th><th>Type</th><th>Condition</th><th>Location</th><th>Date Added</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for eq in equipments %}
+    <tr>
+      <td>{{ eq.id }}</td>
+      <td>{{ eq.name }}</td>
+      <td>{{ eq.type }}</td>
+      <td>
+        {% if eq.condition == "Good" %}
+          <span class="badge bg-success">Good</span>
+        {% elif eq.condition == "Needs Repair" %}
+          <span class="badge bg-warning text-dark">Needs Repair</span>
+        {% else %}
+          <span class="badge bg-danger">Out of Order</span>
+        {% endif %}
+      </td>
+      <td>{{ eq.location }}</td>
+      <td>{{ eq.date_added|date:"M d, Y H:i" }}</td>
+      <td>
+        <a href="{% url 'equipment_edit' eq.id %}" class="btn btn-sm btn-primary">Edit</a>
+        <a href="{% url 'equipment_delete' eq.id %}" class="btn btn-sm btn-danger">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7" class="text-center">No equipment found</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock body %}

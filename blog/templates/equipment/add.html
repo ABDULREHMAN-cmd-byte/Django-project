@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Add Equipment{% endblock title %}
+
+{% block body %}
+<div class="container mt-4">
+  <h2 class="mb-3">Add Equipment</h2>
+
+  <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Save</button>
+      <a href="{% url 'equipment_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock body %}

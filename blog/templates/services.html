@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Services{% endblock title %}
+{% block body %}
+<div class="container my-5">
+  <h1 class="text-center mb-4">Our Services</h1>
+  <div class="row text-center">
+    <div class="col-md-4 mb-3">
+      <div class="card shadow-sm p-3">
+        <h3>🛢 Oil Trading</h3>
+        <p>Comprehensive oil sourcing, distribution, and logistics.</p>
+        <a href="/services/oil/" class="btn btn-primary btn-sm">Learn More</a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card shadow-sm p-3">
+        <h3>🔥 Gas Management</h3>
+        <p>Efficient gas handling and distribution strategies.</p>
+        <a href="/services/gas/" class="btn btn-primary btn-sm">Learn More</a>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card shadow-sm p-3">
+        <h3>📊 Consulting</h3>
+        <p>Energy optimization and industry analysis.</p>
+        <a href="/services/consulting/" class="btn btn-primary btn-sm">Learn More</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

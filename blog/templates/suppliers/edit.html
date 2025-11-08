@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Edit Supplier{% endblock title %}
+
+{% block body %}
+<h2 class="mb-3">Edit Supplier</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label">Name</label>
+    <input type="text" name="name" value="{{ supplier.name }}" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Contact Person</label>
+    <input type="text" name="contact_person" value="{{ supplier.contact_person }}" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Phone</label>
+    <input type="text" name="phone" value="{{ supplier.phone }}" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" value="{{ supplier.email }}" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Address</label>
+    <textarea name="address" class="form-control">{{ supplier.address }}</textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Update</button>
+  <a href="{% url 'supplier_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock body %}

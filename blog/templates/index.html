@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock title %}
+{% block body %}
+
+<div class="container-fluid">
+  <h2 class="mb-4 fw-bold text-primary">Dashboard Overview</h2>
+
+  <!-- Stats Cards Row -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="card shadow border-0 bg-primary text-white">
+        <div class="card-body">
+          <h5 class="card-title">Total Equipment</h5>
+          <h3 class="fw-bold">{{ equipments.count }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow border-0 bg-success text-white">
+        <div class="card-body">
+          <h5 class="card-title">Total Suppliers</h5>
+          <h3 class="fw-bold">{{ suppliers.count }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow border-0 bg-warning text-dark">
+        <div class="card-body">
+          <h5 class="card-title">Stock Items</h5>
+          <h3 class="fw-bold">{{ stocks.count }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow border-0 bg-danger text-white">
+        <div class="card-body">
+          <h5 class="card-title">Low Stock Alerts</h5>
+          <h3 class="fw-bold">{{ low_stock_count }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="card shadow border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-3 text-secondary"><i class="bi bi-bar-chart-line"></i> Inventory Overview</h5>
+      <canvas id="stockChart" height="90"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('stockChart').getContext('2d');
+  const stockChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for item in stocks %}'{{ item.name }}',{% endfor %}],
+      datasets: [{
+        label: 'Quantity',
+        data: [{% for item in stocks %}{{ item.quantity }},{% endfor %}],
+        borderWidth: 1,
+        backgroundColor: 'rgba(13, 110, 253, 0.6)',
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+
+<button onclick="window.location.href='{% url 'equipment_list' %}'">Equipment</button>
+<button onclick="window.location.href='{% url 'supplier_list' %}'">Suppliers</button>
+<button onclick="window.location.href='{% url 'stock_list' %}'">Stock</button>
+<button onclick="window.location.href='{% url 'low_stock' %}'">Low Stock</button>
+
+<div class="container py-5">
+  <h2 class="text-center mb-4">📊 Dashboard Overview</h2>
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="card p-4 text-center animate__animated animate__fadeInLeft">
+        <h4>Equipment</h4>
+        <p>{{ equipment_count }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-4 text-center animate__animated animate__fadeInUp">
+        <h4>Suppliers</h4>
+        <p>{{ supplier_count }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-4 text-center animate__animated animate__fadeInDown">
+        <h4>Stock</h4>
+        <p>{{ stock_count }}</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-4 text-center animate__animated animate__fadeInRight">
+        <h4>Low Stock</h4>
+        <p>{{ low_stock_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
